@@ -1,24 +1,24 @@
 // index.js
 
+//access DOM for Center Display Image and Text
+const centerImage = document.querySelector('#ramen-detail img')
+const centerDishName = document.querySelector("#ramen-detail h2")
+const centerRestaurantName = document.querySelector("#ramen-detail h3")
+
+const dishRating = document.querySelector("#rating-display")
+const dishComment = document.querySelector("#comment-display")
+
+
 // Callbacks
 const handleClick = (e,ramen) => {
-  //Add code
-  //access DOM
-  const centerImage = document.querySelector('#ramen-detail img')
-  const centerDishName = document.querySelector("#ramen-detail h2")
-  const centerRestaurantName = document.querySelector("#ramen-detail h3")
   
-  const dishRating = document.querySelector("#rating-display")
-  const dishComment = document.querySelector("#comment-display")
-  
-  //set new text
+  //set Center Image and text
   centerImage.src = e.target.src
   centerDishName.textContent = ramen.name
   centerRestaurantName.textContent = ramen.restaurant
 
   dishRating.textContent = ramen.rating
   dishComment.textContent = ramen.comment
-  
   
 };
 
@@ -119,6 +119,30 @@ const main = () => {
   displayRamens()
   addSubmitListener()
   
+  // Center Display 1st Obj in Dish List on Screen load
+  fetch('http://localhost:3000/ramens')
+  .then(res => {
+    if (res.ok)
+      return res.json()
+    else{
+      alert("server response error ===>", res)
+    }
+  })
+  .then(ramens => {
+    if (centerDishName.textContent === "Insert Name Here"){
+
+      centerImage.src = ramens[0].image
+      centerDishName.textContent = ramens[0].name
+      centerRestaurantName.textContent = ramens[0].restaurant
+
+      dishRating.textContent = ramens[0].rating
+      dishComment.textContent = ramens[0].comment
+
+      ramens[0]
+      
+    }
+  })
+
 }
 
 main()
