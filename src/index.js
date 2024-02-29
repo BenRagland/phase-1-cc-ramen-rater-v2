@@ -7,7 +7,7 @@ const centerRestaurantName = document.querySelector("#ramen-detail h3")
 
 const dishRating = document.querySelector("#rating-display")
 const dishComment = document.querySelector("#comment-display")
-
+let centerId = 0;
 
 // Callbacks
 const handleClick = (e,ramen) => {
@@ -19,7 +19,7 @@ const handleClick = (e,ramen) => {
 
   dishRating.textContent = ramen.rating
   dishComment.textContent = ramen.comment
-  
+  centerId = ramen.id
 };
 
 const addSubmitListener = () => {
@@ -102,24 +102,19 @@ const displayRamens = () => {
       //when Clicking on ramen
       ramenListLI.addEventListener("click", (e) => handleClick(e , ramen))
       
-
+      
     })
-
+    
   })
   .catch( e => {
     alert("server error ---->",e)
   })
-
+  
 };
 
-const main = () => {
-  // Invoke displayRamens here
-  // Invoke addSubmitListener here
-  
-  displayRamens()
-  addSubmitListener()
-  
-  // Center Display 1st Obj in Dish List on Screen load
+
+// Center Display 1st Obj in Dish List on Screen load
+const displayCenterFirst = () => { 
   fetch('http://localhost:3000/ramens')
   .then(res => {
     if (res.ok)
@@ -130,19 +125,49 @@ const main = () => {
   })
   .then(ramens => {
     if (centerDishName.textContent === "Insert Name Here"){
-
+      
       centerImage.src = ramens[0].image
       centerDishName.textContent = ramens[0].name
       centerRestaurantName.textContent = ramens[0].restaurant
-
+      
       dishRating.textContent = ramens[0].rating
       dishComment.textContent = ramens[0].comment
-
-      ramens[0]
+      
+      centerId = ramens[0].id
+      
       
     }
   })
+}
 
+
+// WARNING: Will Persist if uncommented. Check backupDB if needed.
+
+const deleteDish = () =>{
+
+
+    document.getElementById("delete-btn").addEventListener("click",()=>{
+
+  //   fetch(`http://localhost:3000/ramens/${centerId}`,{
+  //       method:"DELETE",
+  //   })
+  //   .then(res => res.json())
+  //   .then(ramen => console.log(`ramen id:${ramen.id} deleted`))
+    })
+  
+}
+
+
+const main = () => {
+  // Invoke displayRamens here
+  // Invoke addSubmitListener here
+  
+  displayRamens()
+  addSubmitListener()
+  
+  // Center Display 1st Obj in Dish List on Screen load
+  displayCenterFirst()
+  deleteDish()
 }
 
 main()
@@ -155,3 +180,7 @@ export {
   handleClick,
   main,
 };
+
+
+//Create EditMode Boolean
+//Create DeleteButton #delete-btn + #edit-btn created
